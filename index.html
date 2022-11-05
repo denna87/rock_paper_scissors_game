@@ -7,8 +7,30 @@
 
 </head>
 <body>
-<script>
 
+<div id="buttons">
+<button id="rockButton">Rock</button>
+<button id="scissorsButton">Scissors</button>
+<button id="paperButton">Paper</button>
+</div>
+<div>
+    <div id="playerScore"></div>
+    <div id="computerScore"></div>
+    <div id="roundMessage"></div>
+    <div id="finalResult"></div>
+    <div id="gameOver"></div>
+</div>
+
+<script>
+    document.getElementById("rockButton").addEventListener('click', () => {
+        playRound("rock", getComputerChoice());
+    })
+    document.getElementById("scissorsButton").addEventListener('click', () => {
+        playRound("scissors", getComputerChoice());
+    })
+    document.getElementById("paperButton").addEventListener('click', () => {
+        playRound("paper", getComputerChoice());
+    })
     function getComputerChoice() {
         const computerChoice = Math.floor(Math.random() * 3);
         if(computerChoice === 0) {
@@ -27,28 +49,31 @@
     let playerScore = 0;
     let computerScore = 0;
 
+
     function playRound (playerSelection, computerSelection) {
+        let ele=document.getElementById("roundMessage")
         if(playerSelection === computerSelection) {
-            return `You tied. Score: ${playerScore} vs ${computerScore}`;
+            ele.textContent= `You tied. Score: ${playerScore} vs ${computerScore}`;
         } else if(playerSelection === "rock" && computerSelection === "paper") {
             computerScore++;
-            return `You lose. Paper beats Rock. Score: ${playerScore} vs ${computerScore}`;
+            ele.textContent= `You lose. Paper beats Rock. Score: ${playerScore} vs ${computerScore}`;
         } else if(playerSelection === "rock" && computerSelection === "scissors") {
             playerScore++;
-            return `You win. Rock beats scissors. Score: ${playerScore} vs ${computerScore}`;
+            ele.textContent= `You win. Rock beats scissors. Score: ${playerScore} vs ${computerScore}`;
         } else if(playerSelection === "paper" && computerSelection === "scissors") {
             computerScore++;
-            return `You lose. Scissors beat paper. Score: ${playerScore} vs ${computerScore}`;
+            ele.textContent= `You lose. Scissors beat paper. Score: ${playerScore} vs ${computerScore}`;
         } else if(playerSelection === "paper" && computerSelection === "rock"){
             playerScore++;
-            return `You win. Paper beats rock. Score: ${playerScore} vs ${computerScore}`;
+            ele.textContent= `You win. Paper beats rock. Score: ${playerScore} vs ${computerScore}`;
         } else if(playerSelection === "scissors" && computerSelection === "rock") {
             computerScore++;
-            return `You lose. Scissors beat rock. Score: ${playerScore} vs ${computerScore}`;
+            ele.textContent= `You lose. Scissors beat rock. Score: ${playerScore} vs ${computerScore}`;
         }else if(playerSelection === "scissors" && computerSelection === "paper") {
             playerScore++;
-            return `You win. Scissors beat paper. Score: ${playerScore} vs ${computerScore}`;
+            ele.textContent= `You win. Scissors beat paper. Score: ${playerScore} vs ${computerScore}`;
         }
+        game();
 
     }
     //console.log(playRound(playerSelection, computerSelection));
@@ -61,22 +86,35 @@
     // After 5 rounds, display results and "Game Over"
 
     function game() {
-        for (let i = 0; i < 5; i++) {
+        /*for (let i = 0; i < 5; i++) {
             let playerSelection = prompt("Chose Rock, Paper or Scissors").toLowerCase();
             const computerSelection = getComputerChoice();
             console.log(playRound(playerSelection, computerSelection));
+        }*/
+        let finalGame= document.getElementById("finalResult")
+        let gameOver= document.getElementById("gameOver")
+        if (computerScore === 5 || playerScore === 5) {
+            if (playerScore < computerScore) {
+                finalGame.textContent =`You Lost. Computer Score: ${computerScore} vs Your Score: ${playerScore}`;
+            } else if (playerScore > computerScore) {
+                finalGame.textContent=`You won! Your Score: ${playerScore} vs Computer Score: ${computerScore}`;
+            } else if (playerScore === computerScore) {
+                finalGame.textContent =`You tied. Your Score: ${playerScore} vs Computer Score: ${computerScore}`;
+            }
+            let btns = document.getElementsByTagName("button");
+            Array.prototype.slice.call(btns).forEach((btn) => {
+                btn.setAttribute("disabled", true)
+            })
+
+                gameOver.textContent="Game Over! Reload page to play again";
         }
-        if(playerScore < computerScore){
-            console.log(`You Lost. Computer Score: ${computerScore} vs Your Score: ${playerScore}`);
-        } else if(playerScore > computerScore){
-            console.log(`You won! Your Score: ${playerScore} vs Computer Score: ${computerScore}`);
-        } else if(playerScore === computerScore){
-            console.log(`You tied. Your Score: ${playerScore} vs Computer Score: ${computerScore}`);
-        }
-        return "Game Over";
+
     }
 
     console.log(game());
+
+
+
 
 </script>
 </body>
